@@ -10,12 +10,12 @@ x2=1
 
 errors=[]
 
-for i in range(20):
+for i in range(13):
     xn = x2 - f(x2)*(x2 - x1)/(f(x2)-f(x1)+0.000001)
     if abs(x2-x1) == np.float64(0.0):
         break
-    db.loc[i] = [x1,x2,f(x1),f(x2),xn,f(xn),abs(x2-xn)]
-    errors.append(abs(x2-xn))
+    db.loc[i] = [x1,x2,f(x1),f(x2),xn,f(xn),abs(-0.888889-xn)]
+    errors.append(abs(-0.888889-xn))
     x1 = x2
     x2 = xn
 
@@ -29,6 +29,10 @@ for j in range(len(errors)):
             break
         if j-1 > -1: 
             p = np.log10(errors[j+1]/errors[j])/np.log10(errors[j]/errors[j-1])
-            p = round(p, 3)
+            # print(p)
+print('rate of convergence')
+for i in range(-3,0):
+    p= p + errors[i]/3
+p = round(p, 3)
 print(p)
     
