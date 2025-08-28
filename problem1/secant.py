@@ -1,20 +1,19 @@
+import numpy as np
 import pandas as pd
 from function import f
-import numpy as np
 
-def regula_falsi(xl, xu):
+errors = []
+records = []
+
+def secant(xl, xu):
     
-    records = []
-    errors = []
-    prev_xr = xl
+    ans = -0.8888889
 
     for i in range(11):
-        xr = xu - (f(xu)*(xl - xu))/(f(xl) - f(xu))
-        
-        error = abs((xr - prev_xr)/prev_xr) 
-        errors.append(error)
+        xr = xu - ((f(xu)*(xl - xu))/(f(xl) - f(xu) + 0.000000001))
 
-        prev_xr = xr
+        error = abs((xr-ans)/xr)
+        errors.append(error)
 
         records.append({
             "Iteration": i,
@@ -26,11 +25,9 @@ def regula_falsi(xl, xu):
             "Error": error
         })
 
-        if f(xr)*f(xu) < 0:
-            xl = xr
+        xl = xu
+        xu = xr
 
-        if f(xl)*f(xr) < 0:
-            xu = xr
 
     p=0
     for j in range(len(errors)): 
@@ -39,16 +36,16 @@ def regula_falsi(xl, xu):
                 break
             if j-1 > -1: 
                 p = np.log10(errors[j+1]/errors[j])/np.log10(errors[j]/errors[j-1])
-        print(p)
+            print(p)
 
     df = pd.DataFrame(records)
     return df
 
-    
-print(regula_falsi(-1, 1))
+print(secant(-1, 1))
 
 
-    
+
+
 
 
 
